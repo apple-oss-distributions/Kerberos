@@ -1,7 +1,7 @@
 /*
  * KLString.c
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLogin/KLString.c,v 1.18 2004/12/10 21:22:30 lxs Exp $
+ * $Header$
  *
  * Copyright 2003 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -75,10 +75,14 @@ KLStatus __KerberosLoginError (KLStatus inError, const char *function, const cha
         case ccErrNeverDefault:
             err = klParameterErr;
             break;
-	}
+            
+        case KRB5_LIBOS_PWDINTR:
+            err = klUserCanceledErr;
+            break;
+    }
 
     if (err && (ddebuglevel () > 0)) {
-        dprintf ("%s() remapped %ld to %ld ('%s') at %s: %d", 
+        dprintf ("%s() remapped %d to %d ('%s') at %s: %d", 
                  function, inError, err, error_message (err), file, line);
     }
 
@@ -95,7 +99,7 @@ KLStatus __KLRemapKerberos4Error (int inError)
     }
     
     if (err && (ddebuglevel () > 0)) {
-        dprintf ("__KLRemapKerberos4Error (%ld) remapped to %ld '%s'",
+        dprintf ("__KLRemapKerberos4Error (%d) remapped to %d '%s'",
                  inError, err, error_message (err));
     }
 
@@ -200,14 +204,17 @@ KLStatus __KLAddPrefixToString (const char *inPrefix, char **ioString)
     }
 
     if (err == klNoErr)  {
+        char *oldString = *ioString;
         KLIndex prefixLength = strlen (inPrefix);
 
         memcpy (string, inPrefix, prefixLength * sizeof (char));
-        strcpy (string + prefixLength, *ioString);
+        strcpy (string + prefixLength, oldString);
 
-        free (*ioString);
         *ioString = string;
+        string = oldString;
     }
+    
+    free (string);
 
     return KLError_ (err);
 }

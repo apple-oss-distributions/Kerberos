@@ -1,7 +1,7 @@
 /*
  * ChangePasswordController.h
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLoginServer/Headers/ChangePasswordController.h,v 1.4 2004/12/01 18:57:30 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -27,7 +27,7 @@
  */
 
 #include <Kerberos/Kerberos.h>
-#import "Principal.h"
+#import "KerberosPrincipal.h"
 #import "BadgedImageView.h"
 
 @interface ChangePasswordController : NSWindowController
@@ -40,7 +40,7 @@
     IBOutlet NSButton *okButton;
     IBOutlet NSButton *cancelButton;
 
-    Principal *principal;
+    KerberosPrincipal *principal;
     NSString *applicationNameString;
     NSImage *applicationIcon;
     BOOL isSheet;
@@ -49,7 +49,7 @@
     KLStatus result;
 }
 
-- (id) initWithPrincipal: (Principal *) inPrincipal;
+- (id) initWithPrincipal: (KerberosPrincipal *) inPrincipal;
 - (void) dealloc;
 
 - (void) windowDidLoad;
@@ -65,7 +65,10 @@
 - (void) setApplicationIcon: (NSImage *) icon;
 
 - (int) runWindow;
-- (int) runSheetModalForWindow: (NSWindow *) parentWindow;
+- (void) beginSheetModalForWindow: (NSWindow *) parentWindow
+                    modalDelegate: (id) modalDelegate
+                   didEndSelector: (SEL) didEndSelector
+                      contextInfo: (id) contextInfo;
 
 - (void) stopWithCode: (int) returnCode;
 

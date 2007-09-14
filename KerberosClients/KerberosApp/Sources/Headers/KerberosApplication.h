@@ -1,7 +1,7 @@
 /*
  * KerberosApplication.h
  *
- * $Header: /cvs/kfm/KerberosClients/KerberosApp/Sources/Headers/KerberosApplication.h,v 1.2 2005/03/04 23:03:41 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -27,8 +27,8 @@
  */
 
 #import "KerberosController.h"
-#import "CacheCollection.h"
-#import "Principal.h"
+#import "KerberosCacheCollection.h"
+#import "KerberosPrincipal.h"
 
 /*
  * This is a category for NSApplication which implements AppleScript commands
@@ -37,7 +37,7 @@
 
 @interface NSApplication (KerberosApplication) 
 
-- (Principal *) getPrincipalArgumentForCommand: (NSScriptCommand *) command;
+- (KerberosPrincipal *) getPrincipalArgumentForCommand: (NSScriptCommand *) command;
 
 - (id) handleShowTicketListScriptCommand: (NSScriptCommand *) command;
 - (id) handleGetTicketsScriptCommand: (NSScriptCommand *) command;
@@ -46,8 +46,8 @@
 - (id) handleChangePasswordScriptCommand: (NSScriptCommand *) command;
 
 - (NSString *) testString;
-- (CacheCollection *) cacheCollection;
+- (KerberosCacheCollection *) cacheCollection;
 - (NSArray *) caches;
-- (Cache *) defaultCache;
+- (KerberosCache *) defaultCache;
 
 @end

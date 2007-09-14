@@ -1,7 +1,7 @@
 /*
  * FloatingWindow.m
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLoginServer/FloatingWindow.m,v 1.1 2004/05/14 03:09:50 lxs Exp $
+ * $Header$
  *
  * Copyright 2003 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -33,6 +33,9 @@
 
 #import "FloatingWindow.h"
 
+// We need to float over the loginwindow and SecurityAgent so use its hardcoded level.
+#define KLSSecurityAgentWindowLevel 2003
+
 @implementation FloatingWindow
 
 - (id) initWithContentRect: (NSRect) contentRect 
@@ -41,16 +44,16 @@
            defer: (BOOL) flag
 {
     id retval = [super initWithContentRect: contentRect styleMask: styleMask backing: backingType defer: flag];
-    [self setLevel: NSScreenSaverWindowLevel];
+    [self setLevel: KLSSecurityAgentWindowLevel];
     return retval;
 }
 
 - (void) setLevel: (int) newLevel
 {
-    if ([super level] != NSScreenSaverWindowLevel) {
+    if ([super level] != KLSSecurityAgentWindowLevel) {
         //dprintf ("%ld setting window level from %ld to %ld", 
         //    [self windowNumber], [super level], NSScreenSaverWindowLevel);
-        [super setLevel: NSScreenSaverWindowLevel];
+        [super setLevel: KLSSecurityAgentWindowLevel];
     }
 }
 

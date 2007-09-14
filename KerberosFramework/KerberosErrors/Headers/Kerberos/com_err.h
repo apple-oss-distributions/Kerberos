@@ -36,7 +36,7 @@
  * $
  */
 
-/* $Header: /cvs/kfm/KerberosFramework/KerberosErrors/Headers/Kerberos/com_err.h,v 1.9 2003/07/03 16:13:38 lxs Exp $ */
+/* $Header$ */
 
 /* 
  *
@@ -60,13 +60,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
-
-#if TARGET_OS_MAC
-#    if defined(__MWERKS__)
-#        pragma import on
-#    endif
-#    pragma options align=mac68k
 #endif
 
 typedef long errcode_t;
@@ -94,13 +87,6 @@ com_err_handler_t reset_com_err_hook(void);
 
 errcode_t add_error_table    (const struct error_table *et);
 errcode_t remove_error_table (const struct error_table *et);
-
-#if TARGET_OS_MAC
-#    if defined(__MWERKS__)
-#        pragma import reset
-#    endif
-#    pragma options align=reset
-#endif
 
 #ifdef __cplusplus
 }

@@ -25,7 +25,7 @@
 /*
  * KLPrincipalTranslation.h
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Headers/Kerberos/KLPrincipalTranslation.h,v 1.8 2004/10/22 20:52:05 lxs Exp $
+ * $Header$
  */
  
 #ifndef KLPrincipalTranslation_h_
@@ -67,8 +67,6 @@ enum {
 typedef u_int32_t KLPT_APIVersion;
 
 /* Function prototypes */
-
-#pragma export on
 
 KLStatus KerberosLoginPrincipalTranslation_InitializePlugin (KLPT_APIVersion inAPIVersion);
 

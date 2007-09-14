@@ -1,7 +1,7 @@
 /*
  * PrompterController.m
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLoginServer/PrompterController.m,v 1.8 2005/01/23 17:53:22 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -30,7 +30,7 @@
 #import "PrompterController.h"
 #import "AuthenticationController.h"
 #import "ChangePasswordController.h"
-#import "ErrorAlert.h"
+#import "KerberosErrorAlert.h"
 
 #define ResponseSpacing 16
 #define PromptSpacing   12

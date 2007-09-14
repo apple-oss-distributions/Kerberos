@@ -1,7 +1,7 @@
 /*
  * KLPrincipal.h
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLogin/Headers/KLPrincipal.h,v 1.4 2004/12/17 05:05:44 lxs Exp $
+ * $Header$
  *
  * Copyright 2003 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -26,6 +26,4 @@
  * or implied warranty.
  */
 
-krb5_principal __KLGetKerberos5PrincipalFromPrincipal (KLPrincipal inPrincipal);
-
-KLStatus __KLGetRealmFromPrincipal (KLPrincipal inPrincipal, KLKerberosVersion inKerberosVersion, char **outRealm);
+krb5_principal __KLPrincipalGetKerberos5Principal (KLPrincipal inPrincipal);

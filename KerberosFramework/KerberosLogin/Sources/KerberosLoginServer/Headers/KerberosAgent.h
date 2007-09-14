@@ -1,7 +1,7 @@
 /*
  * KerberosAgent.h
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLoginServer/Headers/KerberosAgent.h,v 1.1 2004/05/14 03:09:59 lxs Exp $
+ * $Header$
  *
  * Copyright 2003 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -29,7 +29,7 @@
 #define KERBEROSLOGIN_DEPRECATED
 #include <Kerberos/KerberosLogin.h>
 #include <Kerberos/KerberosLoginPrivate.h>
-#include <Kerberos/mach_server_utilities.h>
+#include <Kerberos/kipc_server.h>
 #include <Kerberos/KerberosDebug.h>
 
 #include <mach/message.h>

@@ -1,7 +1,7 @@
 /*
  * KerberosController.h
  *
- * $Header: /cvs/kfm/KerberosClients/KerberosApp/Sources/Headers/KerberosController.h,v 1.14 2005/05/25 20:39:55 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -27,7 +27,7 @@
  */
 
 
-#import "CacheCollection.h"
+#import "KerberosCacheCollection.h"
 #import "TicketInfoController.h"
 #import "TicketListController.h"
 #import "PreferencesController.h"
@@ -59,7 +59,7 @@
     IBOutlet NSMenuItem *dockChangePasswordMenuItem;
     IBOutlet NSMenuItem *dockSeparatorItem;
     
-    CacheCollection *cacheCollection;
+    KerberosCacheCollection *cacheCollection;
     
     NSTimer *minuteTimer;
 
@@ -101,7 +101,8 @@
 - (void) preferencesDidChange: (NSNotification *) notification;
 - (void) cacheCollectionDidChange: (NSNotification *) notification;
 - (void) ticketListDidChange: (NSNotification *) notification;
-- (void) listSelectionDidChange: (NSNotification *) notification;
+- (void) cacheSelectionDidChange: (NSNotification *) notification;
+- (void) ticketSelectionDidChange: (NSNotification *) notification;
 - (void) windowWillClose: (NSNotification *) notification;
 
 - (void) minuteTimer: (NSTimer *) timer;
@@ -119,6 +120,6 @@
 - (NSImage *) warningKerberosIconImage;
 - (NSImage *) noTicketsKerberosIconImage;
 - (NSImage *) kerberosAppIconImage;
-- (NSImage *) dockIconImageForCache: (Cache *) cache;
+- (NSImage *) dockIconImageForCache: (KerberosCache *) cache;
 
 @end

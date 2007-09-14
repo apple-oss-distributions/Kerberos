@@ -1,7 +1,7 @@
 /*
  * TicketListController.h
  *
- * $Header: /cvs/kfm/KerberosClients/KerberosApp/Sources/Headers/TicketListController.h,v 1.11 2005/03/04 23:02:55 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -26,8 +26,8 @@
  * or implied warranty.
  */
 
-#import "CacheCollection.h"
-#import "Cache.h"
+#import "KerberosCacheCollection.h"
+#import "KerberosCache.h"
 
 @interface TicketListController : NSWindowController
 {
@@ -35,14 +35,14 @@
     IBOutlet NSTableColumn *cacheCollectionTableColumn;
     IBOutlet NSTableColumn *cacheCollectionTimeRemainingTableColumn;
     
-    IBOutlet NSOutlineView *ticketsOutlineView;
+    IBOutlet NSTableView   *ticketsTableView;
     IBOutlet NSTableColumn *ticketsTableColumn;
     IBOutlet NSTableColumn *ticketsTimeRemainingTableColumn;
     
     NSToolbar *toolbar;
     
     TargetOwnedTimer *minuteTimer;
-    CacheCollection *cacheCollection;
+    KerberosCacheCollection *cacheCollection;
     NSString *cacheNameString;
     NSPoint cascadePoint;
 }
@@ -64,13 +64,6 @@
 - (int) numberOfRowsInTableView: (NSTableView *) tableView;
 - (id) tableView: (NSTableView *) tableView objectValueForTableColumn: (NSTableColumn *) tableColumn row: (int) rowIndex;
 
-- (id)   outlineView: (NSOutlineView *) outlineView child: (int) rowIndex ofItem: (id) item;
-- (BOOL) outlineView: (NSOutlineView *) outlineView isItemExpandable: (id) item;
-- (int)  outlineView: (NSOutlineView *) outlineView numberOfChildrenOfItem: (id) item;
-- (id)   outlineView: (NSOutlineView *) outlineView objectValueForTableColumn: (NSTableColumn *) tableColumn byItem: (id) item;
-
-- (BOOL) outlineView: (NSOutlineView *) outlineView shouldEditTableColumn: (NSTableColumn *) tableColumn item: (id) item;
-
 - (BOOL) splitView: (NSSplitView *) sender canCollapseSubview: (NSView *) subview;
 - (float) splitView: (NSSplitView *) sender constrainMinCoordinate: (float) proposedMin ofSubviewAt: (int) offset;
 - (float) splitView: (NSSplitView *) sender constrainMaxCoordinate: (float) proposedMax ofSubviewAt: (int) offset;
@@ -84,17 +77,16 @@
 - (void) cacheCollectionDidChange: (NSNotification *) notification;
 - (void) preferencesDidChange: (NSNotification *) notification;
 - (void) tableViewSelectionDidChange: (NSNotification *) notification;
-- (void) outlineViewSelectionDidChange: (NSNotification *) notification;
 - (void) windowDidMove: (NSNotification *) notification;
 
 - (void) synchronizeWindowTitle;
 - (void) synchronizeCascadePoint;
 - (void) synchronizeToolbar;
 
-- (BOOL) haveSelectedCache;
-- (Cache *) selectedCache;
+- (BOOL) hasSelectedCache;
+- (KerberosCache *) selectedCache;
 - (BOOL) selectedCacheNeedsValidation;
-- (BOOL) haveSelectedCredential;
-- (Credential *) selectedCredential;
+- (BOOL) hasSelectedCredential;
+- (KerberosCredential *) selectedCredential;
 
 @end

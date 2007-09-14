@@ -1,7 +1,7 @@
 /*
  * com_err_threads.h
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosErrors/Headers/com_err_threads.h,v 1.1 2004/10/04 17:48:25 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -38,8 +38,8 @@ typedef struct error_tables {
 errcode_t com_err_thread_lock_error_tables (error_table_array_t *error_tables);
 errcode_t com_err_thread_unlock_error_tables (error_table_array_t *error_tables);
 
-errcode_t com_err_thread_lock_for_bundle_lookup ();
-errcode_t com_err_thread_unlock_for_bundle_lookup ();
+errcode_t com_err_thread_lock_for_bundle_lookup (void);
+errcode_t com_err_thread_unlock_for_bundle_lookup (void);
 
 errcode_t com_err_thread_get_com_err_hook (com_err_handler_t *handler);
 errcode_t com_err_thread_set_com_err_hook (com_err_handler_t handler);

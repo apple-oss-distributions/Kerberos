@@ -4,7 +4,7 @@
  * This file contains implementations of krb4 credentials cache operations in terms
  * of the CCache API (<http://www.umich.edu/~sgr/v4Cache/>).
  *
- * $Header: /cvs/krbdev/krb5/src/lib/krb4/CCache-glue.c,v 1.7 2004/07/15 17:41:40 lxs Exp $
+ * $Header$
  */
 
 
@@ -140,7 +140,7 @@ krb4int_save_credentials_addr(
 	int				lifetime,
 	int				kvno,
 	KTEXT			ticket,
-	long			issue_date,
+	KRB4_32			issue_date,
 	KRB_UINT32		local_address)
 {
 	cc_int32				cc_err = ccNoError;
@@ -219,7 +219,7 @@ krb_get_tf_realm (
     int				kerr = KSUCCESS;
 	cc_int32		cc_err = ccNoError;
 	cc_context_t	cc_context = NULL;
-    cc_int32		cc_version = NULL;
+    cc_int32		cc_version = 0;
     cc_ccache_t		ccache = NULL;
 	
 	cc_err = cc_initialize (&cc_context, ccapi_version_3, &cc_version, NULL);

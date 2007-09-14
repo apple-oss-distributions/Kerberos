@@ -1,7 +1,7 @@
 /*
  * KLUserInterfaceAPI.c
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLogin/KLUserInterface.c,v 1.4 2004/08/20 18:27:56 lxs Exp $
+ * $Header$
  *
  * Copyright 2003 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -161,6 +161,8 @@ krb5_error_code __KLPrompter (krb5_context   context,
                 break;
         }
     }
-
-    return KLError_ (err);
+    
+    // Use the krb5 prompter error for user cancelled
+    err = KLError_ (err);
+    return (err == klUserCanceledErr) ? KRB5_LIBOS_PWDINTR : err;
 }

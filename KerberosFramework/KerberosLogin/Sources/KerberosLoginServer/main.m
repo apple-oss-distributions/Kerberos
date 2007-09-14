@@ -1,7 +1,7 @@
 /*
  * main.m
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLoginServer/main.m,v 1.7 2005/04/19 22:38:37 lxs Exp $
+ * $Header$
  *
  * Copyright 2003 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -56,7 +56,7 @@ int main (int argc, const char *argv[])
     // Testing:
     if (0) {
         AuthenticationController *controller = NULL;
-        Principal *principal = NULL;
+        KerberosPrincipal *principal = NULL;
         
         if (!err) {
             controller = [[AuthenticationController alloc] init];
@@ -64,7 +64,7 @@ int main (int argc, const char *argv[])
         }
         
         if (!err) {
-            principal = [[Principal alloc] initWithString: @"me@EXAMPLE.COM" klVersion: kerberosVersion_V5];
+            principal = [[KerberosPrincipal alloc] initWithString: @"me@EXAMPLE.COM"];
         }
         
         if (!err) {
@@ -128,10 +128,10 @@ int main (int argc, const char *argv[])
         
     } else {
         // Enter the server event loop
-        err = mach_server_run_server (KerberosAgentIPC_server);
+        err = kipc_server_run_server (KerberosAgentIPC_server);
     }
     
-    syslog (LOG_NOTICE, "Exiting: %s (%d)", mach_error_string (err), err);
+    syslog (LOG_NOTICE, "Exiting: %s (%d)", kipc_error_string (err), err);
     
     closelog ();    
     [pool release];

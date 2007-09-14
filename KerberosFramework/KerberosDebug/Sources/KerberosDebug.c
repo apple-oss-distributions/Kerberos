@@ -1,7 +1,7 @@
 /*
  * KerberosDebug.c
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosDebug/Sources/KerberosDebug.c,v 1.15 2005/01/23 17:53:59 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -27,9 +27,8 @@
  */
 
 #include <Kerberos/KerberosDebug.h>
-#include <Kerberos/KerberosLogin.h>
-#include <Kerberos/profile.h>
 #include <CoreFoundation/CoreFoundation.h>
+#include <Security/AuthSession.h>
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -41,6 +40,9 @@
 #include <mach/mach_error.h>
 #include <pthread.h>
 #include <asl.h>
+
+static int dappendformat (char **io_string, const char *format, ...) __attribute__ ((format (printf, 2, 3)));
+static int dlog (aslclient client, const char *format, ...)          __attribute__ ((format (printf, 2, 3)));
 
 #pragma mark -
 
@@ -86,21 +88,22 @@ static int dappendstring (char **io_string, const char *in_append_string)
 {
     int err = 0;
     char *string = NULL;
+    int new_length = 0;
+    int old_length = 0;
     
     if (in_append_string == NULL)                { err = EINVAL; }
     if (io_string == NULL || *io_string == NULL) { err = EINVAL; }
     
     if (!err) {
-        int new_length = strlen (*io_string) + strlen (in_append_string) + 1;
+        old_length = strlen (*io_string);
+        new_length = old_length + strlen (in_append_string) + 1;
         
         string = (char *) calloc (new_length, sizeof (char));
         if (string == NULL) { err = ENOMEM; }
     }
     
-    if (!err)  {
-        int old_length = strlen (*io_string);
-        
-        memcpy (string, *io_string, old_length * sizeof (char));
+    if (!err) {
+        memcpy (string, *io_string, old_length);
         strcpy (string + old_length, in_append_string);
         
         free (*io_string);
@@ -134,7 +137,7 @@ static int dappendformat (char **io_string, const char *format, ...)
         err = dappendstring (io_string, string);
     }
 
-    if (string != NULL) { dfreestring (string); }
+    if (string != NULL) { free (string); }
     
     return err;
 }
@@ -312,14 +315,21 @@ int ddebuglevel (void)
 
 void dprintf (const char *format, ...)
 {
+    va_list args;
+        
+    va_start (args, format);
+    dvprintf (format, args);
+    va_end (args);        
+}
+
+// ---------------------------------------------------------------------------
+
+void dvprintf (const char *format, va_list args)
+{
     aslclient client = NULL;
     
     if (dlevel (&client) > 0) {
-        va_list args;
-        
-        va_start (args, format);
-        dvlog (client, format, args);
-        va_end (args);        
+        dvlog (client, format, args);       
     }
 }
 
@@ -376,7 +386,7 @@ void dprintmem (const void *inBuffer, size_t inLength)
                 }
                 
                 if (!err) {
-                    err = dlog (client, string);
+                    err = dlog (client, "%s", string);
                 }
 
                 if (string != NULL) { dfreestring (string); }
@@ -387,46 +397,29 @@ void dprintmem (const void *inBuffer, size_t inLength)
 
 // ---------------------------------------------------------------------------
 
-void dprintbootstrap (task_t inTask)
+void dprintsession (void)
 {
     aslclient client = NULL;
     
     if (dlevel (&client) > 0) {
-        kern_return_t            err = KERN_SUCCESS;
-        mach_port_t              bootPort = MACH_PORT_NULL;
-        name_array_t             serviceArray = NULL;
-        mach_msg_type_number_t   serviceCount = 0;
-        name_array_t             serverArray = NULL;
-        mach_msg_type_number_t   serverCount = 0;
-        bootstrap_status_array_t serverStatusArray = NULL;
-        mach_msg_type_number_t   serverStatusCount = 0;
-        mach_msg_type_number_t   i;
-        
-        err = task_get_bootstrap_port ((inTask != TASK_NULL) ? inTask : mach_task_self (), &bootPort);
-        
-        if (!err) {
-            err = bootstrap_info (bootPort, &serviceArray, &serviceCount, 
-                                  &serverArray, &serverCount, 
-                                  &serverStatusArray, &serverStatusCount);
-            if (!err) {
-                // print out the bootstrap state
-                err = dlog (client, "Bootstrap State: %d registered services", serviceCount);
-                
-                for (i = 0; !err && (i < serviceCount); i++) {
-                    err = dlog (client, "Service '%s' registered by server '%s'.  Status is %s.\n",
-                                (serviceArray[i][0] == '\0' ? "Unknown" : serviceArray[i]),
-                                (serverArray[i][0] == '\0' ? "Unknown" : serverArray[i]),
-                                ((serverStatusArray[i] == BOOTSTRAP_STATUS_ACTIVE) ? "Active" :
-                                 ((serverStatusArray[i] == BOOTSTRAP_STATUS_ON_DEMAND) ? 
-                                  "On-Demand" : "Inactive")));
-                }
-            } else {
-                // report bootstrap_info() failure (overwrites err)
-                err = dlog (client, "bootstrap_info() failed: %d '%s'\n", err, mach_error_string (err));
-            }        
-        } else {
-            // report task_get_bootstrap_port() failure (overwrites err)
-            err = dlog (client, "task_get_bootstrap_port() failed: %d '%s'\n", err, mach_error_string (err));
-        }
+	OSStatus              err = noErr;
+	SecuritySessionId     sessionID;
+	SessionAttributeBits  attributes;
+	
+	if (!err) {
+	    err = SessionGetInfo (callerSecuritySession, &sessionID, &attributes);
+	}
+	
+	if (!err) {
+	    dlog (client, "Security session is %ld (%s%s%s%s%s)", sessionID,
+		  (attributes & sessionWasInitialized) ? "inited," : "",
+		  (attributes & sessionIsRoot) ? "root," : "",
+		  (attributes & sessionHasGraphicAccess) ? "gui," : "",
+		  (attributes & sessionHasTTY) ? "tty," : "",
+		  (attributes & sessionIsRemote) ? "remote" : "local");
+	} else {
+	    dlog (client, "SessionGetInfo() failed: %ld", err);
+	}    
     }
 }
+

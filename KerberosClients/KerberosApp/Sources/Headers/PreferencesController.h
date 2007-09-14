@@ -1,7 +1,7 @@
 /*
  * PreferencesController.h
  *
- * $Header: /cvs/kfm/KerberosClients/KerberosApp/Sources/Headers/PreferencesController.h,v 1.6 2004/10/13 16:04:50 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -28,7 +28,7 @@
 
 
 #import <Cocoa/Cocoa.h>
-#import "Preferences.h"
+#import "KerberosPreferences.h"
 
 @interface PreferencesController : NSWindowController
 {
@@ -81,7 +81,7 @@
     IBOutlet NSTextField *renewableMinimumHoursTextField;
     IBOutlet NSTextField *renewableMinimumMinutesTextField;
     
-    Preferences *preferences;
+    KerberosPreferences *preferences;
 }
 
 - (id) init;

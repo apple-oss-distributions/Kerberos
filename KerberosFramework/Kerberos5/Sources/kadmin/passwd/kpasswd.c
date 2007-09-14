@@ -1,12 +1,12 @@
 /*
  * Copyright 1993-1994 OpenVision Technologies, Inc., All Rights Reserved.
  * 
- * $Header: /cvs/krbdev/krb5/src/kadmin/passwd/kpasswd.c,v 1.25 2001/02/26 18:22:08 epeisach Exp $
+ * $Header$
  *
  *
  */
 
-static char rcsid[] = "$Id: kpasswd.c,v 1.25 2001/02/26 18:22:08 epeisach Exp $";
+static char rcsid[] = "$Id: kpasswd.c 17258 2005-06-21 01:36:03Z raeburn $";
 
 #include <kadm5/admin.h>
 #include <krb5.h>
@@ -183,6 +183,7 @@ kpasswd(context, argc, argv)
 			             /* someday */,
 			 OVSEC_KADM_STRUCT_VERSION,
 			 OVSEC_KADM_API_VERSION_1,
+			 NULL,
 			 &server_handle);
   if (code != 0) {
     if (code == OVSEC_KADM_BAD_PASSWORD)

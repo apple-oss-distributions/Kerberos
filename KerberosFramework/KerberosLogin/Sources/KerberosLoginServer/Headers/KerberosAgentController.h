@@ -1,7 +1,7 @@
 /*
  * KerberosAgentController.h
  *
- * $Header: /cvs/kfm/KerberosFramework/KerberosLogin/Sources/KerberosLoginServer/Headers/KerberosAgentController.h,v 1.3 2005/01/23 17:53:19 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -28,16 +28,10 @@
 
 @interface KerberosAgentController : NSObject
 {
-    IBOutlet NSWindow *aboutWindow;
-    IBOutlet NSTextField *aboutVersionTextField;
-    IBOutlet NSTextField *aboutCopyrightTextField;
     NSMutableArray *activeWindows;
 }
 
 - (void) dealloc;
-
-- (void) awakeFromNib;
-- (IBAction) showAboutBox: (id) sender;
 
 - (void) addActiveWindow: (NSWindow *) window;
 - (void) removeActiveWindow: (NSWindow *) window;

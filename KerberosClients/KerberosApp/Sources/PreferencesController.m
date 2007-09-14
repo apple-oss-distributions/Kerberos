@@ -1,7 +1,7 @@
 /*
  * PreferencesController.m
  *
- * $Header: /cvs/kfm/KerberosClients/KerberosApp/Sources/PreferencesController.m,v 1.12 2005/01/31 20:51:32 lxs Exp $
+ * $Header$
  *
  * Copyright 2004 Massachusetts Institute of Technology.
  * All Rights Reserved.
@@ -27,8 +27,8 @@
  */
 
 #import "PreferencesController.h"
-#import "LifetimeSlider.h"
-#import "LifetimeFormatter.h"
+#import "KerberosLifetimeSlider.h"
+#import "KerberosLifetimeFormatter.h"
 #import "Utilities.h"
 
 @implementation PreferencesController
@@ -38,8 +38,8 @@
 - (id) init
 {
     if ((self = [super initWithWindowNibName: @"Preferences"])) {
-        preferences = [Preferences sharedPreferences];
-        if (preferences == NULL) {
+        preferences = [KerberosPreferences sharedPreferences];
+        if (!preferences) {
             [self release];
             return NULL;
         }
@@ -73,7 +73,7 @@
 {
     // Check to see if the window was closed before. ([self window] will load the window)
     if (![[self window] isVisible]) {
-        dprintf ("PreferencesController %x displaying window...", (long) self);
+        dprintf ("PreferencesController %lx displaying window...", (long) self);
         
         [self preferencesToWindow];
         [[self window] setFrameUsingName: [self windowFrameAutosaveName]];
@@ -217,7 +217,7 @@
             break;
     }
     
-    // Default Principal
+    // Default KerberosPrincipal
     
     if ([preferences rememberPrincipalFromLastLogin]) {
         [defaultPrincipalRadioButtonMatrix selectCell: rememberPrincipalRadioButtonCell];
@@ -285,7 +285,7 @@
     [self defaultPrincipalRadioButtonWasHit: self];  // set enabledness of controls
     [self defaultTicketOptionsRadioButtonWasHit: self];  // set enabledness of controls
 
-    return YES;  // For now, always succeed because we don't get errors from Preferences yet
+    return YES;  // For now, always succeed because we don't get errors from KerberosPreferences yet
 }
 
 // ---------------------------------------------------------------------------
@@ -325,15 +325,15 @@
         [preferences setDefaultAddressless: ([addresslessCheckbox state] == NSOnState)];
         [preferences setDefaultRenewable:   ([renewableCheckbox   state] == NSOnState)];
         
-        LifetimeFormatter *lifetimeFormatter =  [lifetimeTextField formatter];
-        LifetimeFormatter *renewableFormatter =  [renewableTextField formatter];
+        KerberosLifetimeFormatter *lifetimeFormatter =  [lifetimeTextField formatter];
+        KerberosLifetimeFormatter *renewableFormatter =  [renewableTextField formatter];
         
         [preferences setDefaultLifetime: [lifetimeFormatter lifetimeForControl: lifetimeSlider]];
         [preferences setDefaultRenewableLifetime: [renewableFormatter lifetimeForControl: renewableSlider]];
     }
     
     
-    // Default Principal
+    // Default KerberosPrincipal
     
     selectedCell = [defaultPrincipalRadioButtonMatrix selectedCell];
     if (selectedCell == rememberPrincipalRadioButtonCell) { 
